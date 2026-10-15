@@ -1,22 +1,33 @@
-buildscript {
-    dependencies {
-        classpath(libs.kotlin.gradle)
-    }
-}
-
 plugins {
-    alias(libs.plugins.android.application) apply false
-    alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.kotlin.serialization) apply false
-
-    alias(kei.plugins.spotless)
+    id("com.android.application")
+    id("kotlinx-serialization")
 }
 
-val buildLogic: IncludedBuild = gradle.includedBuild("build-logic")
-tasks {
-    listOf("clean", "spotlessApply", "spotlessCheck").forEach { task ->
-        named(task) {
-            dependsOn(buildLogic.task(":$task"))
+android {
+    namespace = "eu.kanade.tachiyomi.extension.all.personalhentai"
+    compileSdk = AndroidConfig.compileSdk
+
+    defaultConfig {
+        applicationId = "eu.kanade.tachiyomi.extension.all.personalhentai"
+        minSdk = AndroidConfig.minSdk
+        targetSdk = AndroidConfig.targetSdk
+        versionCode = extVersionCode
+        versionName = "1.$extVersionCode"
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
         }
     }
 }
+
+ext {
+    extName = "Personal Hentai Catalog"
+    extClass = ".PersonalHentai"
+    extVersionCode = 1
+    isNsfw = true
+}
+
+apply(from = "$rootDir/common.gradle")
