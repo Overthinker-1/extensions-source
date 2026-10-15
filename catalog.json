@@ -1,0 +1,18 @@
+{
+  "title": "Meu catálogo PT-BR",
+  "mangas": [
+    {
+      "title": "Overflow",
+      "cover": "https://exemplo.com/capas/overflow.jpg",
+      "description": "Overflow — versão em mangá PT-BR.",
+      "author": "Kaiduka",
+      "artist": "Kaiduka",
+      "tags": ["pt-br", "romance", "ecchi", "hentai"],
+      "status": "completed",
+      "chapters": [
+        { "name": "Capítulo 1", "url": "https://scanlator.com/overflow/1", "date": "2024-03-10" },
+        { "name": "Capítulo 2", "url": "https://scanlator.com/overflow/2", "date": "2024-04-02" }
+      ]
+    }
+  ]
+}
