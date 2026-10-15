@@ -1,28 +1,33 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.serialization)
-
-    alias(kei.plugins.android.base)
-    alias(kei.plugins.spotless)
+    id("com.android.application")
+    id("kotlinx-serialization")
 }
 
 android {
-    namespace = "keiyoushi.core"
+    namespace = "eu.kanade.tachiyomi.extension.all.personalhentai"
+    compileSdk = AndroidConfig.compileSdk
 
-    buildFeatures {
-        resValues = false
+    defaultConfig {
+        applicationId = "eu.kanade.tachiyomi.extension.all.personalhentai"
+        minSdk = AndroidConfig.minSdk
+        targetSdk = AndroidConfig.targetSdk
+        versionCode = extVersionCode
+        versionName = "1.$extVersionCode"
     }
 
-    testOptions {
-        unitTests.isReturnDefaultValues = true
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
+        }
     }
 }
 
-dependencies {
-    compileOnly(libs.bundles.common)
-    compileOnly(libs.tachiyomi.lib.v16)
-
-    testImplementation(libs.bundles.common)
-    testImplementation(libs.tachiyomi.lib.v16)
-    testImplementation(libs.junit)
+ext {
+    extName = "Personal Hentai Catalog"
+    extClass = ".PersonalHentai"
+    extVersionCode = 1
+    isNsfw = true
 }
+
+apply(from = "$rootDir/common.gradle")
