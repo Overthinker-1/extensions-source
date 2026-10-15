@@ -1,0 +1,45 @@
+name: Build Personal Hentai
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Clean bad PNGs
+        run: |
+          rm -f src/all/personalhentai/res/mipmap-mdpi/ic_launcher.png
+          rm -f src/all/personalhentai/res/mipmap-hdpi/ic_launcher.png
+          rmdir src/all/personalhentai/res/mipmap-mdpi 2>/dev/null || true
+          rmdir src/all/personalhentai/res/mipmap-hdpi 2>/dev/null || true
+
+      - name: Patch manifest icon
+        run: |
+          MANIFEST=src/all/personalhentai/AndroidManifest.xml
+          if ! grep -q 'android:icon' "$MANIFEST"; then
+            sed -i 's|android:label="Personal Hentai Catalog"|android:label="Personal Hentai Catalog" android:icon="@android:drawable/ic_menu_view"|' "$MANIFEST"
+          fi
+          cat "$MANIFEST"
+
+      - name: Build
+        run: ./gradlew :src:all:personalhentai:assembleDebug --no-daemon --stacktrace
+
+      - name: Upload APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: personalhentai-apk
+          path: src/all/personalhentai/build/outputs/apk/debug/*.apk
+          if-no-files-found: warn
