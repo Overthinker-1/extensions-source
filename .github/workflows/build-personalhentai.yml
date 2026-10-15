@@ -15,9 +15,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Clean bad PNGs
         run: |
           rm -f src/all/personalhentai/res/mipmap-mdpi/ic_launcher.png
